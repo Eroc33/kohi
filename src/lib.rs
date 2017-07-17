@@ -165,7 +165,7 @@ impl Kohi{
         let mut cmd = Command::new("javac");
         
         if let Some(target_version) = target_version.into(){
-            cmd.arg("-version").arg(target_version);
+            cmd.arg("-target").arg(target_version);
         }
 
         let status = cmd
