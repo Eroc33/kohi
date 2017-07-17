@@ -15,7 +15,7 @@ fn main() {
     
     println!("Compiling");
     
-    let compile_result = kohi.compile();
+    let compile_result = kohi.compile(None);
     
     let status = if run_class == "--no-run"{
         println!("No class passed, will not run");

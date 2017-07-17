@@ -151,7 +151,7 @@ impl Kohi{
         })
     }
     
-    pub fn compile(self) -> Result<Self>{
+    pub fn compile<I: Into<Option<String>>>(self,target_version: I) -> Result<Self>{
         let classpath = std::env::join_paths(&self.libs).unwrap();
         
         if !self.dist_path.exists(){
@@ -161,17 +161,23 @@ impl Kohi{
                 bail!(ErrorKind::DistNotDir(self.dist_path));
             }
         }
+        
+        let mut cmd = Command::new("javac");
+        
+        if let Some(target_version) = target_version.into(){
+            cmd.arg("-version").arg(target_version);
+        }
 
-        let status = Command::new("javac")
-                              .arg("-d")
-                              .arg(&self.dist_path)
-                              .arg("-cp")
-                              .arg(classpath)
-                              .arg("-sourcepath")
-                              .arg(&self.source_path)
-                              .args(self.source_files.as_slice())
-                              .status()
-                              .chain_err(|| ErrorKind::ForkFailure("javac"))?;
+        let status = cmd
+            .arg("-d")
+            .arg(&self.dist_path)
+            .arg("-cp")
+            .arg(classpath)
+            .arg("-sourcepath")
+            .arg(&self.source_path)
+            .args(self.source_files.as_slice())
+            .status()
+            .chain_err(|| ErrorKind::ForkFailure("javac"))?;
                               
         if status.success(){
             Ok(self)
