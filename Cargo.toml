@@ -1,6 +1,7 @@
 [package]
+authors = ["Euan Rochester <euan@rochester.me.uk>"]
 name = "kohi"
 version = "0.1.0"
-authors = ["Euan Rochester <euan@rochester.me.uk>"]
 
 [dependencies]
+error-chain = "0.10.0"
